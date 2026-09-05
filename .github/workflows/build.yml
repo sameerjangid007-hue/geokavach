@@ -26,9 +26,10 @@ jobs:
       - name: Get Dependencies
         run: flutter pub get
 
-      - name: Create Android Project & Build Release APK
+      - name: Create Android & Add Internet Permission
         run: |
           flutter create . --platforms=android
+          sed -i '/<manifest/a \    <uses-permission android:name="android.permission.INTERNET"\/>' android/app/src/main/AndroidManifest.xml
           flutter build apk --release
 
       - name: Upload Release APK
