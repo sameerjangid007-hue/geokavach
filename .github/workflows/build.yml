@@ -29,16 +29,17 @@ jobs:
       - name: Get Dependencies
         run: flutter pub get
 
-      - name: Create Android Wrapper & Build APK
+      - name: Create Android Config & Build Release APK
         run: |
           flutter create . --platforms=android
-          flutter build apk --debug
+          flutter build apk --release --no-tree-shake-icons
 
-      - name: Publish Direct APK Release
+      - name: Publish Direct Release APK
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.0
-          name: "GeoKavach Standalone APK"
-          files: build/app/outputs/flutter-apk/app-debug.apk
+          tag_name: v1.0.1
+          name: "GeoKavach Release APK"
+          files: build/app/outputs/flutter-apk/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
