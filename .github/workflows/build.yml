@@ -5,9 +5,6 @@ on:
   push:
     branches: [ main ]
 
-permissions:
-  contents: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,17 +26,13 @@ jobs:
       - name: Get Dependencies
         run: flutter pub get
 
-      - name: Create Android Config & Build Release APK
+      - name: Create Android Project & Build Release APK
         run: |
           flutter create . --platforms=android
-          flutter build apk --release --no-tree-shake-icons
+          flutter build apk --release
 
-      - name: Publish Direct Release APK
-        uses: softprops/action-gh-release@v2
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: v1.0.1
-          name: "GeoKavach Release APK"
-          files: build/app/outputs/flutter-apk/app-release.apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          name: geokavach-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
