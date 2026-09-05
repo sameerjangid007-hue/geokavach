@@ -5,6 +5,9 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,9 +34,11 @@ jobs:
           flutter create . --platforms=android
           flutter build apk --debug
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - name: Publish Direct APK Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: geokavach-app
-          path: build/app/outputs/flutter-apk/app-debug.apk
-
+          tag_name: v1.0.0
+          name: "GeoKavach Standalone APK"
+          files: build/app/outputs/flutter-apk/app-debug.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
